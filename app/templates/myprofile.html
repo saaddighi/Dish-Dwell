@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .profile-header h2 {
+        color: #333;
+    }
+    .recipe-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+    .recipe-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+    }
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .recipe-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .recipe-content {
+        padding: 25px;
+    }
+    .recipe-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .recipe-meta {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .recipe-meta-item {
+        display: flex;
+        align-items: center;
+        color: #666;
+        font-size: 1rem;
+    }
+    .recipe-meta-item i {
+        margin-right: 10px;
+        color: #007bff;
+        font-size: 1.2rem;
+    }
+    .recipe-section {
+        margin-bottom: 20px;
+    }
+    .recipe-section-title {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.3rem;
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .ingredients-list {
+        list-style-type: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+    }
+    .ingredients-list li {
+        background-color: #f1f3f5;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .instructions {
+        line-height: 1.7;
+        font-size: 1rem;
+        color: #333;
+    }
+    @media (max-width: 768px) {
+        .recipe-image {
+            height: 250px;
+        }
+        .ingredients-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>{{ user.first_name }}'s Recipes</h2>
+        <p>Here are the recipes you've created:</p>
+    </div>
+
+    {% if created_recipes %}
+    <div class="recipe-grid">
+        {% for recipe in created_recipes %}
+        <div class="recipe-card">
+            {% if recipe.image %}
+                <img 
+                    src="{{ recipe.image }}" 
+                    alt="{{ recipe.title }}" 
+                    class="recipe-image"
+                    onerror="this.src='https://via.placeholder.com/800x400?text=Recipe+Image'"
+                >
+            {% endif %}
+
+            <div class="recipe-content">
+                <h2 class="recipe-title">{{ recipe.title }}</h2>
+
+                <div class="recipe-meta">
+                    <div class="recipe-meta-item">
+                        <i class="fas fa-clock"></i>
+                        {{ recipe.prep_time }} mins
+                    </div>
+                    <div class="recipe-meta-item">
+                        <i class="fas fa-utensils"></i>
+                        {{ recipe.servings }} servings
+                    </div>
+                </div>
+
+                <div class="recipe-section">
+                    <h3 class="recipe-section-title">Ingredients</h3>
+                    <ul class="ingredients-list">
+                        {% for ingredient in data %}
+                            <li>
+                                <span>{{ ingredient['name'] }}</span>
+                                <span class="text-muted">
+                                    {{ ingredient['amount'] }} {{ ingredient['unit']}}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="recipe-section">
+                    <h3 class="recipe-section-title">Instructions</h3>
+                    <div class="instructions">
+                        {{ recipe.instructions|safe }}
+                    </div>
+                </div>
+            </div>
+            <form method="POST" action="{{ url_for('myprofile.delt', recipe_id=recipe.id) }}" onsubmit="return confirm('Are you sure you want to delete this recipe?');">
+                <button type="submit" class="btn btn-danger">Delete Recipe</button>
+            </form>            
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-light rounded">
+        <h2>No Recipes Found</h2>
+        <p>You haven't created any recipes yet. <a href="{{ url_for('Crecipie.create_recipe') }}">Create one now!</a></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

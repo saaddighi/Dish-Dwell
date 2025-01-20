@@ -4,7 +4,6 @@ from flask_login import login_required, current_user
 import json
 from app import db
 from app.models import Recipes
-import json
 
 homep = Blueprint('home', __name__)
 
@@ -42,30 +41,28 @@ def get_renadom_recipes(number=25):
 
 def get_recipe(id):
     try:
-        url = f"https://api.spoonacular.com/recipes/random?apiKey=eea22b03760641f1bba4b51c6b75b5b8"
+        url = f"https://api.spoonacular.com/recipes/{id}/information?apiKey=eea22b03760641f1bba4b51c6b75b5b8"
         with httpx.Client(timeout=10.0) as client:    
             response = client.get(url)
-            data = response.json()
-            recipies = []
-            for recipe in data['recipes']:    
-                recipie_data = {
-                    'id': recipe['id'],
-                    'title': recipe['title'],
-                    'image': recipe.get('image', ''),
-                    'readyInMinutes': recipe.get('readyInMinutes', 0),
-                    'servings': recipe.get('servings', 0),
-                    'summary': recipe.get('summary', ''),
-                    'instructions': recipe.get('instructions', ''),
+            data = response.json()   
+            recipie_data = {
+                    'id': str(id),
+                    'title': data['title'],
+                    'image': data.get('image', ''),
+                    'readyInMinutes': data['readyInMinutes'],
+                    'servings': data['servings'],
+                    'summary': data['summary'],
+                    'instructions': data['instructions'],
                     'ingredients': [
                         {
                             'name': ingredient['name'],
                             'amount': ingredient['amount'],
                             'unit': ingredient['unit']
                         }
-                        for ingredient in recipe.get('extendedIngredients', [])
+                        for ingredient in data['extendedIngredients']
                     ]
                 }
-            return recipie_data
+        return recipie_data
     except httpx.RequestError as exc:
         print(f"An error occurred while requesting {exc.request.url!r}.")
         return []
@@ -77,7 +74,7 @@ def home():
     recipes = get_renadom_recipes(25)
     return render_template('home.html', user=current_user, recipes=recipes)
 
-@homep.route('/save/<int:recipe_id>', methods=['POST'])
+@homep.route('/save/<int:recipe_id>', methods=['GET','POST'])
 @login_required
 def save(recipe_id):
     

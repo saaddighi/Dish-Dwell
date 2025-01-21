@@ -21,10 +21,13 @@ def creat_app():
     from app.routes.home import homep
     from app.routes.creat_recipe import Crecipie
     from app.routes.myprofile import myprofile
+    from app.routes.generate_recipe import Grecipe
+    
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(homep, url_prefix='/')
     app.register_blueprint(Crecipie, url_prefix='/')
     app.register_blueprint(myprofile, url_prefix='/')
+    app.register_blueprint(Grecipe, url_prefix='/')
     
     from .models import User, Recipes
     creat_database(app)

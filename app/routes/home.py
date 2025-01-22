@@ -8,6 +8,7 @@ from app.models import Recipes
 homep = Blueprint('home', __name__)
 
 def get_renadom_recipes(number=25):
+    """gets 25 recipes from the api"""
     url = f"https://api.spoonacular.com/recipes/random?apiKey=eea22b03760641f1bba4b51c6b75b5b8&number={number}"
     try:
         with httpx.Client(timeout=10.0) as client:    
@@ -40,6 +41,7 @@ def get_renadom_recipes(number=25):
         return []
 
 def get_recipe(id):
+    """gets a recipe from its id"""
     try:
         url = f"https://api.spoonacular.com/recipes/{id}/information?apiKey=eea22b03760641f1bba4b51c6b75b5b8"
         with httpx.Client(timeout=10.0) as client:    
@@ -71,13 +73,14 @@ def get_recipe(id):
 @homep.route('/')
 @login_required
 def home():
+    """displays 25 recipes"""
     recipes = get_renadom_recipes(25)
     return render_template('home.html', user=current_user, recipes=recipes)
 
 @homep.route('/save/<int:recipe_id>', methods=['GET','POST'])
 @login_required
 def save(recipe_id):
-    
+    """saves recipe when user click save recipe"""
     recipe_to_save = get_recipe(recipe_id)
     ingr = json.dumps(recipe_to_save['ingredients'])
     nw_recipe = Recipes(title=recipe_to_save['title'], image=recipe_to_save['image'],

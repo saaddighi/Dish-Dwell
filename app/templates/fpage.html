@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Dish Dwell{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f9f3e9;
+        color: #333;
+        padding: 50px;
+        margin: 0;
+    }
+    .logo {
+        width: 300px; /* Increased logo size */
+        margin-bottom: 30px;
+    }
+    .description {
+        font-size: 20px; /* Increased font size */
+        margin-bottom: 50px;
+        color: #555;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+    .button {
+        display: inline-block;
+        padding: 20px 50px; /* Increased padding */
+        margin: 20px;
+        font-size: 22px; /* Increased font size */
+        color: #fff;
+        background-color: #ff6f61;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    .button:hover {
+        background-color: #ff3b2f;
+        transform: scale(1.05);
+    }
+    .features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 60px;
+        gap: 40px;
+    }
+    .feature-item {
+        width: 250px;
+        text-align: center;
+    }
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+    .feature-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    .feature-text {
+        font-size: 16px;
+        color: #777;
+        line-height: 1.5;
+    }
+    footer {
+        margin-top: 80px;
+        font-size: 14px;
+        color: #aaa;
+    }
+</style>
+
+<body>
+
+    <img src="https://dishdwell.com/cdn/shop/files/fnf-01-removebg-preview.png?v=1722604117&width=978" alt="Dish Dwell Logo" class="logo">
+
+    <p class="description">
+        Welcome to Dish Dwell, your cozy corner for sharing and discovering delightful recipes from around the world. Join our community to explore new flavors, share your culinary creations, and connect with fellow food enthusiasts!
+    </p>
+
+    <a href="/login">
+        <button class="button">Login</button>
+    </a>
+    <a href="/sign-up">
+        <button class="button">Sign Up</button>
+    </a>
+
+    <div class="features">
+        <div class="feature-item">
+            <div class="feature-title">Discover Recipes</div>
+            <div class="feature-text">Explore a vast collection of recipes shared by our community.</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-title">Share Your Own</div>
+            <div class="feature-text">Upload your favorite recipes and share them with others.</div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; {{ current_year }} Dish Dwell. All rights reserved.
+    </footer>
+
+</body>
+{% endblock %}

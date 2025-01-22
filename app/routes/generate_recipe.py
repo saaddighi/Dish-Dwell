@@ -6,6 +6,7 @@ Grecipe = Blueprint('Grecipe', __name__)
 
 
 def get_id(ing):
+    """search recipes from the ingredients"""
     try:
         url = f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={ing}&apiKey=eea22b03760641f1bba4b51c6b75b5b8"
         with httpx.Client(timeout=10.0) as client:    
@@ -55,14 +56,13 @@ def get_recipe(id):
 @Grecipe.route('/generate_recipe', methods=['GET', 'POST'])
 @login_required
 def generate():
+    """displays the search results"""
     ids = []
     if request.method == 'POST':
         ingr = request.form.getlist('ingredient_name[]')
         if ingr:
             ids = get_id(ingr)
-            print(ids)
             recipes = [get_recipe(j) for j in ids]
-            print(recipes)
             return render_template('display.html', user=current_user, recipes=recipes)
     else:
         return render_template('Grecipie.html', user=current_user)

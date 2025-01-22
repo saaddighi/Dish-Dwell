@@ -10,6 +10,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def authh():
+    """login route"""
     form = loginForm()
     
     if current_user.is_authenticated:
@@ -28,6 +29,7 @@ def authh():
 
 @auth.route('/sign-up', methods=['POST', 'GET'])
 def sign_up():
+    """sign-up route"""
     form = RegistrationForm()
     if current_user.is_authenticated:
         return redirect(url_for('home.home'))
@@ -43,11 +45,12 @@ def sign_up():
         login_user(user, remember=True)
         flash(f"Account created for {form.Firstname.data} {form.Lastname.data}!", category="success")
         return f"Account created for {form.Firstname.data} {form.Lastname.data}!"
-    return render_template('sign_up.html', form=form)
+    return render_template('sign_up.html', form=form, user=current_user)
 
 
 @auth.route('logout')
 @login_required
 def logout():
+    """logout route"""
     logout_user()
     return redirect(url_for('auth.authh'))

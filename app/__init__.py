@@ -16,19 +16,23 @@ def creat_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
     
-    
+    """importing the Blueprints"""
     from app.routes.auth_routes import auth
     from app.routes.home import homep
     from app.routes.creat_recipe import Crecipie
     from app.routes.myprofile import myprofile
     from app.routes.generate_recipe import Grecipe
+    from app.routes.frontpage import fpage
     
+    """registring the Blueprints"""
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(homep, url_prefix='/')
     app.register_blueprint(Crecipie, url_prefix='/')
     app.register_blueprint(myprofile, url_prefix='/')
     app.register_blueprint(Grecipe, url_prefix='/')
+    app.register_blueprint(fpage, url_prefix='/')
     
+    """creating the tables on the database"""
     from .models import User, Recipes
     creat_database(app)
     
@@ -43,6 +47,7 @@ def creat_app():
 
 
 def creat_database(app):
+    """create database if it don't already exists"""
     if not path.exists('/app' + DB_NAME):
         with app.app_context():
             db.create_all()

@@ -10,7 +10,8 @@ myprofile = Blueprint('myprofile', __name__)
 
 @myprofile.route('/myprofile')
 @login_required
-def mprofile():   
+def mprofile():
+    """displays saved and created recipes on /myprofile"""   
     created_recipes = Recipes.query.filter_by(user_id=current_user.id).all()
     if created_recipes:    
         for recipe in created_recipes:
@@ -22,6 +23,7 @@ def mprofile():
 @myprofile.route('/delete/<int:recipe_id>', methods=['POST'])
 @login_required
 def delt(recipe_id):
+    """deletes recipes from the database"""
     recipe_to_del = Recipes.query.get_or_404(recipe_id)
     print('ok')
     if recipe_to_del.user_id != current_user.id:

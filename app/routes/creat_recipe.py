@@ -9,6 +9,7 @@ Crecipie = Blueprint('Crecipie', __name__)
 @Crecipie.route('/creat_recipie',methods=['GET', 'POST'])
 @login_required
 def create_recipe():
+    """save the recipe that the user created"""
     if request.method == 'POST':
         title = request.form.get('title')
         image = request.form.get('image')

@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model, UserMixin):
+    """the model for user database"""
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
@@ -16,6 +17,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
     
 class Recipes(db.Model):
+    """the model for recipes database"""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150))
     image = db.Column(db.String(255))

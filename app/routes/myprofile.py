@@ -3,12 +3,13 @@ from flask_login import login_required, current_user
 from app.models import Recipes
 import json
 from app import db
+import os
 
 
 myprofile = Blueprint('myprofile', __name__)
 
 
-@myprofile.route('/myprofile')
+@myprofile.route('/myprofile', methods=['GET','POST'])
 @login_required
 def mprofile():
     """displays saved and created recipes on /myprofile"""   
@@ -16,6 +17,7 @@ def mprofile():
     if created_recipes:    
         for recipe in created_recipes:
             data = json.loads(recipe.ingredients)
+            print(recipe.image)
     else:
         data = ""
     return render_template('myprofile.html', created_recipes=created_recipes, user=current_user, data=data)
@@ -29,7 +31,8 @@ def delt(recipe_id):
     if recipe_to_del.user_id != current_user.id:
         print('You are not authorized to delete this recipe.', 'danger')
         return redirect(url_for('myprofile.mprofile'))
-
+    
+    os.remove('app/static/'+recipe_to_del.image)
     db.session.delete(recipe_to_del)
     db.session.commit()
     flash('Recipe deleted successfully!', 'success')

@@ -17,5 +17,5 @@ Technologies Used
 
 Backend: Python, Flask
 Frontend: HTML, CSS, JavaScript
-Database: SQLite (or any database you’re using)
+Database: SQLAlchemy
 API: Spoonacular API for recipe data

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
-from app.models import Recipes
+from app.models import URecipes
 from app import db
 import json
 import os
@@ -47,7 +47,7 @@ def create_recipe():
         print("Image URL path:", image_filename)
         
 
-        new_recipe = Recipes(
+        new_recipe = URecipes(
             title=title,
             image=image_filename,
             prep_time=prep_time,

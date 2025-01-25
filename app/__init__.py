@@ -23,6 +23,7 @@ def creat_app():
     from app.routes.myprofile import myprofile
     from app.routes.generate_recipe import Grecipe
     from app.routes.frontpage import fpage
+    from app.routes.user_recipes import Urecipe
     
     """registring the Blueprints"""
     app.register_blueprint(auth, url_prefix='/')
@@ -31,9 +32,10 @@ def creat_app():
     app.register_blueprint(myprofile, url_prefix='/')
     app.register_blueprint(Grecipe, url_prefix='/')
     app.register_blueprint(fpage, url_prefix='/')
+    app.register_blueprint(Urecipe, url_prefix='/')
     
     """creating the tables on the database"""
-    from .models import User, Recipes
+    from .models import User, Recipes, URecipes
     creat_database(app)
     
     login_manager.init_app(app)

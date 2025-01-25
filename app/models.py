@@ -26,3 +26,14 @@ class Recipes(db.Model):
     instructions = db.Column(db.Text)
     ingredients = db.Column(db.JSON)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+class URecipes(db.Model):
+    """the model for user recipes database"""
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150))
+    image = db.Column(db.String(255))
+    prep_time = db.Column(db.Integer)
+    servings = db.Column(db.Integer)
+    instructions = db.Column(db.Text)
+    ingredients = db.Column(db.JSON)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

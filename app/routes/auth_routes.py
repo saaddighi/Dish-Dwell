@@ -22,8 +22,8 @@ def authh():
             login_user(user, remember=True)
             flash('Log in succesful', "sucsess")
             return redirect(url_for('home.home'))
-    else:
-        flash("log in unsecsessful, password or email incorrect", "danger")
+        elif user and user.check_password(form.password.data) == False :
+            flash("log in unsecsessful, password or/and email incorrect", "danger")
     return render_template('login.html', user=current_user, form=form)
 
 
@@ -42,9 +42,11 @@ def sign_up():
         new_user = User(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
-        login_user(user, remember=True)
+        user = User.query.filter_by(email= form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=True)
         flash(f"Account created for {form.Firstname.data} {form.Lastname.data}!", category="success")
-        return f"Account created for {form.Firstname.data} {form.Lastname.data}!"
+        return redirect(url_for('home.home'))
     return render_template('sign_up.html', form=form, user=current_user)
 
 
